@@ -29,13 +29,13 @@
         <a class="nav-link" href="{% url 'movie:home' %}">Movies</a>
       </li>
       {% endif %}
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown"  >
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       Categories
       </a>
-      <div class="dropdown-menu drop-font" aria-labelledby="navbarDropdown">
+      <div class="dropdown-menu drop-font" style="background-color:#1A1A1A;" aria-labelledby="navbarDropdown">
       {% for category in links %}
-        <a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.genre }}</a>
+        <a class="dropdown-item" style="background-color:#1A1A1A;" href="{{ category.get_absolute_url }}">{{ category.genre }}</a>
       {% endfor %}
       </div>
       </li>
