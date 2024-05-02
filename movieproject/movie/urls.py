@@ -3,7 +3,7 @@ from . import views
 app_name='movie'
 urlpatterns = [
     path('',views.home,name='home'),
-    path('user_home/',views.user_home,name='userhome'),
+    path('user_home/<int:user_id>/',views.user_home,name='userhome'),
     path('login/',views.login,name='login'),
     path('userlogin/',views.userlogin,name='userlogin'),
     path('logout/',views.logout_view,name='logout'),

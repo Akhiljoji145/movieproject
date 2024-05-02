@@ -45,7 +45,6 @@ def logout_view(request):
 	return redirect('/')
 
 def user_home(request):
-
 	movie=Movie.objects.all()
 	return render(request,'movielist.html',{'movie':movie})
 

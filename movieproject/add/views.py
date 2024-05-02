@@ -7,7 +7,7 @@ from .models import Rating
 def addmovie(request, user_id):
     user = get_object_or_404(User, id=user_id)
     categories = Category.objects.all()
-
+    movie=Movie.objects.all()
     if request.method == 'POST':
         name = request.POST.get('name')
         image = request.FILES.get('img')
@@ -18,21 +18,25 @@ def addmovie(request, user_id):
         category = get_object_or_404(Category, id=category_id)  # Get the Category instance
         date = request.POST.get('date')
 
-        movie = Movie(name=name, image=image, trailer=trailer, banner=banner, desc=desc, category=category, relea_date=date, user=user.username)
-        movie.save()
-        return redirect('/')
-    return render(request, 'add_movie.html', {'user': user, 'category': categories})
-def deletemovie(request,mov_id):
-	movie=Movie.objects.get(id=mov_id)
-	movie.delete()
-	return redirect('/')
-def update(request,mov_id):
-	movie=Movie.objects.get(id=mov_id)
-	form=UpdateMovieForm(request.POST or None,request.FILES,instance=movie)
+        movies = Movie(name=name, image=image, trailer=trailer, banner=banner, desc=desc, category=category, relea_date=date, user=user.username)
+        movies.save()
+        return render(request,'user_movielist.html',{'user':user,'movie':movie})
+    return render(request, 'add_movie.html',{'user':user,'category': categories})
+def deletemovie(request,mov_id,user_id):
+	movies=Movie.objects.get(id=mov_id)
+	user=User.objects.get(id=user_id)
+	movie=Movie.objects.all()
+	movies.delete()
+	return render(request,'user_movielist.html',{'movie':movie,'user':user})
+def update(request,mov_id,user_id):
+	movies=Movie.objects.get(id=mov_id)
+	user=User.objects.get(id=user_id)
+	movie=Movie.objects.all()
+	form=UpdateMovieForm(request.POST or None,request.FILES,instance=movies)
 	if form.is_valid():
 		form.save()
-		return redirect('/')
-	return render(request,'update.html',{'movie':movie,'form':form})
+		return render(request,'user_movielist.html',{'movie':movie,'user':user})
+	return render(request,'update.html',{'movies':movies,'user':user,'form':form})
 
 def rate(request):
 	if request.method=='POST':

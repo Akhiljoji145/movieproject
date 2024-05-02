@@ -1,6 +1,6 @@
 {% extends 'home.html'%}
 {% block content %}
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
 		{% if movie %}
 		<div class="col-sm-9 col-md-9 col-lg-9 col-xl-9">
@@ -15,21 +15,25 @@
 		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 banner">
 			<img width="100%" src="{{movie.banner.url}}">
 		</div>
-		<div class="col-sm-12 col-md-7 col-lg-7 col-xl-7" height="400px">
+		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 banner">
+			<h4>Release Date: {{movie.relea_date}}</h4>
+		</div>
+		<div class="col-sm-12 col-md-12 col-lg-7 col-xl-7" height="400px">
 			<iframe style="border:0" width="100%" height="400px" src="{{movie.trailer}}"></iframe>
 		</div>
-		<div class="col-sm-12 col-md-5 col-lg-5 col-xl-5" height="400px">
+		<div class="col-sm-12 col-md-12 col-lg-5 col-xl-5" height="400px">
 			<p class="para">{{movie.desc}}</p><br>
 		{% endif %}
 		</div>
 	</div>
 </div>
 
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-12 col-md-12 col-lg-12">
 		<h5>Reviews:</h5>
 		</div>
+		{% if rating %}
 		{% for i in rating %}
 		<div class="col-sm-12 col-md-12 col-lg-12">
 		<h6>{{i.user}}:</h6>
@@ -38,11 +42,16 @@
 		<p>{{i.review}}</p>
 		</div>
 		{% endfor %}
+		{% else %}
+		<div class="col-sm-12 col-md-12 col-lg-12">
+		<p>No Reviews Yet ...</p>
+		</div>
+		{% endif %}
 	</div>
 </div>
 {% if user.id == rating.id %}
 {% if user.is_authenticated %}
-<div class="container" style="background-color:#1A1A1A">
+<div class="container-fluid" style="background-color:#1A1A1A">
         {% csrf_token %}
         <form class="row" method='POST' action="{% url 'add:rate' %}">
         {% csrf_token %}

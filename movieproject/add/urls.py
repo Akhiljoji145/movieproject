@@ -19,8 +19,8 @@ from . import views
 app_name='add'
 urlpatterns = [
     path('<int:user_id>/',views.addmovie,name='addmovie'),
-    path('delete/<int:mov_id>/',views.deletemovie,name='deletemovie'),
-    path('update/<int:mov_id>/',views.update,name='update'),
+    path('delete/<int:mov_id>/<int:user_id>/',views.deletemovie,name='deletemovie'),
+    path('update/<int:mov_id>/<int:user_id>/',views.update,name='update'),
     path('rate/',views.rate,name='rate'),
     path('updateuser/<int:user_id>/',views.UpdateUser,name='updateuser')
 ]
