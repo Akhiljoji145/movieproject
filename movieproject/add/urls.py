@@ -21,6 +21,7 @@ urlpatterns = [
     path('<int:user_id>/',views.addmovie,name='addmovie'),
     path('delete/<int:mov_id>/<int:user_id>/',views.deletemovie,name='deletemovie'),
     path('update/<int:mov_id>/<int:user_id>/',views.update,name='update'),
-    path('rate/',views.rate,name='rate'),
+    path('rate/<int:mov_id>/<int:user_id>/',views.rate,name='rate'),
+    path('rate/<int:mov_id>/<int:user_id>/<int:rate_id>/',views.delete_rate,name='deleterate'),
     path('updateuser/<int:user_id>/',views.UpdateUser,name='updateuser')
 ]

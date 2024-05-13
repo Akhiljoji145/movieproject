@@ -16,7 +16,7 @@ def home(request):
 		page=1
 	try:
 		movie=paginator.page(page)
-	except (EmptyPage,InvalidPage): 
+	except (EmptyPage,InvalidPage):
 		movie=paginator.page(paginator.num_pages)
 	return render(request,'movielist.html',{'movie':movie})
 
@@ -44,9 +44,10 @@ def logout_view(request):
 	logout(request)
 	return redirect('/')
 
-def user_home(request):
+def user_home(request,user_id):
 	movie=Movie.objects.all()
-	return render(request,'movielist.html',{'movie':movie})
+	user=User.objects.get(id=user_id)
+	return render(request,'movielist.html',{'movie':movie,'user':user})
 
 def userlogin(request):
  	if request.method == 'POST':
@@ -59,7 +60,7 @@ def userlogin(request):
  				return render(request,'user_movielist.html',{'user':user,'movie':movie})
  			else:
  				return render(request,'login.html')
- 		except User.DoesNotExist:  
+ 		except User.DoesNotExist:
  			return render(request, 'register.html')
  	return render(request, 'login.html')
 
@@ -70,7 +71,7 @@ def user_reg(request):
 			user=form.save()
 			return redirect('/login/')
 	else:
-		form=CustomUserCreationForm() 
+		form=CustomUserCreationForm()
 	return render(request,'register.html',{'form':form})
 
 def user_details(request, user_id):

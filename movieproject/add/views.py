@@ -38,16 +38,23 @@ def update(request,mov_id,user_id):
 		return render(request,'user_movielist.html',{'movie':movie,'user':user})
 	return render(request,'update.html',{'movies':movies,'user':user,'form':form})
 
-def rate(request):
-	if request.method=='POST':
-		rate=request.POST.get('rate')
-		review=request.POST.get('review')
-		movie=request.POST.get('movie')
-		user=request.POST.get('user')
-		rating=Rating(rating=rate,review=review,movie=movie,user=user)
-		rating.save()
-		return redirect('/')
-	return redirect('moviedetail/<str:user_name>/<int:mov_id>/')
+def rate(request,mov_id,user_id):
+    users=User.objects.get(id=user_id)
+    movies=Movie.objects.get(id=mov_id)
+    ratings=Rating.objects.all().filter(movie=mov_id)
+    if request.method=='POST':
+        rate=request.POST.get('rate')
+        review=request.POST.get('review')
+        movie_id=request.POST.get('movie_id')
+        user=request.POST.get('user')
+        try:
+            rating=Rating(rating=rate,review=review,movie=movie_id,user=user)
+            rating.save()
+        except Rating.DoesNotExist:
+            return render(request,'moviedetail.html',{'movie':movies,'user':users})
+    return render(request,'moviedetail.html',{'movie':movies,'user':users,'rating':ratings})
+
+
 
 def UpdateUser(request,user_id):
 	user=User.objects.get(id=user_id)
@@ -56,4 +63,13 @@ def UpdateUser(request,user_id):
 		form.save()
 		return redirect('/')
 	return render(request,'update.html',{'user':user,'form':form})
+
+def delete_rate(request,mov_id,user_id,rate_id):
+    users=User.objects.get(id=user_id)
+    movies=Movie.objects.get(id=mov_id)
+    ratings=Rating.objects.all().filter(movie=mov_id)
+    rated=Rating.objects.get(id=rate_id)
+    rated.delete()
+    return render(request,'moviedetail.html',{'movie':movies,'user':users,'rating':ratings})
+
 

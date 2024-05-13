@@ -8,8 +8,8 @@
 		</div>
 		<div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
 			{% if movie.user == user.username %}
-			<a class="btn btn-danger" style="margin-top:20px;margin-right:10px;" href="{% url 'add:deletemovie' user.id %}">Delete</a>
-			<a class="btn btn-warning" style="margin-top:20px;" href="{% url 'add:update' user.id %}">Update</a>
+			<a class="btn btn-danger" style="margin-top:20px;margin-right:10px;" href="{% url 'add:deletemovie' movie.id user.id %}">Delete</a>
+			<a class="btn btn-warning" style="margin-top:20px;" href="{% url 'add:update' movie.id user.id %}">Update</a>
 			{% endif %}
 		</div>
 		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 banner">
@@ -34,70 +34,57 @@
 		<h5>Reviews:</h5>
 		</div>
 		{% if rating %}
+
 		{% for i in rating %}
 		<div class="col-sm-12 col-md-12 col-lg-12">
 		<h6>{{i.user}}:</h6>
 		</div>
 		<div class="col-sm-12 col-md-12 col-lg-12">
+		<h4>{{i.rating}} out of 5</h4>
+		</div>
+		<div class="col-sm-12 col-md-12 col-lg-12">
 		<p>{{i.review}}</p>
 		</div>
-		{% endfor %}
-		{% else %}
+
+		{% if i.user == user.username %}
 		<div class="col-sm-12 col-md-12 col-lg-12">
-		<p>No Reviews Yet ...</p>
+		<a class="btn btn-danger" href="{% url 'add:deleterate' movie.id user.id i.id %}">Delete</a>
 		</div>
 		{% endif %}
-	</div>
-</div>
-{% if user.id == rating.id %}
-{% if user.is_authenticated %}
-<div class="container-fluid" style="background-color:#1A1A1A">
-        {% csrf_token %}
-        <form class="row" method='POST' action="{% url 'add:rate' %}">
-        {% csrf_token %}
-        <div class="col-sm-12 padding">
-            <label><h4>Rate out of 5 :&nbsp </h4></label>
 
-        	<div class="form-check form-check-inline">
-  			<input class="form-check-input" name="rate" type="radio" value="1">
-  			<label class="form-check-label">1</label>
-			</div>
-			<div class="form-check form-check-inline">
-  			<input class="form-check-input" name="rate" type="radio" value="2">
-  			<label class="form-check-label">2</label>
-			</div>
-			<div class="form-check form-check-inline">
-  			<input class="form-check-input" name="rate" type="radio" value="3">
-  			<label class="form-check-label">3</label>
-  			</div>
-  			<div class="form-check form-check-inline">
-  			<input class="form-check-input" name="rate" type="radio" value="4">
-  			<label class="form-check-label">4</label>
-			</div>
-			<div class="form-check form-check-inline">
-  			<input class="form-check-input" name="rate" type="radio" value="5">
-  			<label class="form-check-label">5</label>
-			</div>
-        </div>
-        <div class="col-sm-12 padding">
-        	<label><h4>Review :</h4></label>
-        </div>
-        <div class="col-sm-12 padding">
-        	<textarea cols="120" rows="10" name="review"></textarea>
-        </div>
-        <div class="col-sm-12 padding">
-        	<input class="form-control" name="movie" type="hidden" value="{{movie.id}}" readonly>
-        </div>
-        <div class="col-sm-12 padding">
-        	<input class="form-control" name="user" type="hidden" value="{{user.username}}" readonly>
-        </div>
-        <div class="col-sm-12 padding">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
-    </form>
-	</div>
-</div>
-{% endif %}
-{% endif %}
+
+		{% endfor %}
+		{% else %}
+        <div class="col-sm-12 col-md-12 col-lg-12">
+		<p>Reviews Not Yet...</p>
+		</div>
+		{% if user.is_authenticated %}
+		<div class="container" style="background-color:#1A1A1A">
+		<form  method="POST" action="{% url 'add:rate' movie.id user.id %}">
+		    {% csrf_token %}
+		    <div class="form-group">
+                <label>Rate:</label>
+                &nbsp;<input class="custom-radio" type="radio" name="rate" value="1"> 1
+                &nbsp;<input class="custom-radio" type="radio" name="rate" value="2"> 2
+                &nbsp;<input class="custom-radio" type="radio" name="rate" value="3"> 3
+                &nbsp;<input class="custom-radio" type="radio" name="rate" value="4"> 4
+                &nbsp;<input class="custom-radio" type="radio" name="rate" value="5"> 5
+            </div>
+            <div class="form-group">
+                <label>Review:</label>
+            </div>
+            <div class="form-group">
+                <textarea name="review" rows="8px" cols="100%"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="hidden" name="movie_id" value="{{movie.id}}">
+            </div>
+            <div class="form-group">
+                <input type="hidden" name="user" value="{{user.username}}">
+            </div>
+            <input class="btn btn-primary" type="submit" value="submit">
+		</form>
+		</div>
+		{% endif %}
+		{% endif %}
 {% endblock %}
